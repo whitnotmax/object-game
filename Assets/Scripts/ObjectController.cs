@@ -34,7 +34,6 @@ public class ObjectController : MonoBehaviour
         {
             target -= new Vector3(50, 0);
         }
-        Debug.Log(target, gameObject);
         originalScale = transform.localScale;
         transform.localScale = new Vector3(.01f, .01f, .01f);
     }
