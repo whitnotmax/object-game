@@ -48,8 +48,8 @@ public class Generate : MonoBehaviour
             }
             objectControllers.Clear();
             GenerateObjects();
-            numberToGenerate *= 2;
-            speed *= 1.5f;
+            numberToGenerate += 10;
+            speed += .5f;
         }
     }
 
