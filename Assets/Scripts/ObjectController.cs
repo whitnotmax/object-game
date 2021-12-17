@@ -13,7 +13,10 @@ public enum ExpandState
 
 public class ObjectController : MonoBehaviour
 {
+    
+
     public ExpandState expandState = ExpandState.Spawning;
+    public bool isPreview;
 
     private float step;
     private Vector3 target;
@@ -48,7 +51,14 @@ public class ObjectController : MonoBehaviour
     private void Move()
     {
         float step = Generate.instance.speed * Time.deltaTime; // calculate distance to move
-        transform.position = Vector3.MoveTowards(transform.position, target, step);
+        if (!isPreview)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target, step);
+        }
+        else
+        {
+            transform.localEulerAngles += new Vector3(0, step * Generate.instance.previewSpinMultiplier);
+        }
     }
 
     private void UpdateExpand()

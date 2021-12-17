@@ -7,9 +7,13 @@ public class Generate : MonoBehaviour
 {
     [SerializeField]
     private GameObject[] availableObjects;
-    
+
+    [SerializeField]
+    private GameObject previewSpawn;
+
     private Dictionary<GameObject, ObjectController> objectControllers = new Dictionary<GameObject, ObjectController>();
     private List<GameObject> targets = new List<GameObject>();
+    private GameObject currentPreview;
     private int wave = 1;
 
     public static Generate instance;
@@ -23,6 +27,7 @@ public class Generate : MonoBehaviour
     [Header("Properties for generated objects")]
     public float maxSize;
     public float speed;
+    public float previewSpinMultiplier;
     public float scaleSpeedReduce;
     public float spawnScaleSpeedIncrease;
     public float despawnScaleSpeedIncrease;
@@ -31,6 +36,12 @@ public class Generate : MonoBehaviour
     void Start()
     { 
         correctObject = availableObjects[Random.Range(0, availableObjects.Length)];
+        GameObject preview = Instantiate(correctObject);
+        preview.transform.localPosition = previewSpawn.transform.localPosition;
+        preview.SetActive(true);
+        preview.AddComponent<ObjectController>().isPreview = true;
+        currentPreview = preview;
+
         instance = this;
         GenerateObjects();
         
@@ -55,12 +66,14 @@ public class Generate : MonoBehaviour
 
     private void GenerateObjects()
     {
+        
+
         for (int i = 0; i < numberToGenerate; i++)
         {
             GameObject randomObject = availableObjects[Random.Range(0, availableObjects.Length)];
             GameObject obj = Instantiate(randomObject);
             obj.tag = "Object";
-            obj.name = randomObject.name; // so that we can see if the object is the right one when it is clicked lmfaooo
+            obj.name = randomObject.name; // so that we can see if the object is the right one when it is clicked 
             obj.transform.localPosition = Random.insideUnitCircle * 15;
             obj.AddComponent<Rigidbody>().isKinematic = true;
             obj.SetActive(true);
@@ -69,7 +82,6 @@ public class Generate : MonoBehaviour
             {
                 targets.Add(obj);
             }
-
         }
     }
 
