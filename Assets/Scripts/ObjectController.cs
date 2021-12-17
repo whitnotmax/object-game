@@ -114,10 +114,6 @@ public class ObjectController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (gameObject.name == Generate.instance.correctObject.name)
-        {
-            Generate.instance.score++;
-        }
-        expandState = ExpandState.Despawning;
+        Generate.instance.RemoveObject(gameObject, true);
     }
 }
