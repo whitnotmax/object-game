@@ -16,7 +16,7 @@ public class MouseLook : MonoBehaviour
 
     private float xRotation;
 
-#if !UNITY_ANDROID || UNITY_EDITOR
+#if !UNITY_ANDROID
     // Start is called before the first frame update
     void Start()
     {

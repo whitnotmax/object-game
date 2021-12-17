@@ -93,7 +93,7 @@ public class ObjectController : MonoBehaviour
 
     private void OnMouseEnter()
     {
-#if !UNITY_ANDROID || UNITY_EDITOR
+#if !UNITY_ANDROID
         if (expandState == ExpandState.Despawning)
             return;
         canExpand = true;
@@ -104,7 +104,7 @@ public class ObjectController : MonoBehaviour
 
     private void OnMouseExit()
     {
-#if !UNITY_ANDROID || UNITY_EDITOR
+#if !UNITY_ANDROID
         if (expandState == ExpandState.Despawning)
             return;
         canExpand = true;
@@ -114,6 +114,10 @@ public class ObjectController : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (gameObject.name == Generate.instance.correctObject.name)
+        {
+            Generate.instance.score++;
+        }
         expandState = ExpandState.Despawning;
     }
 }

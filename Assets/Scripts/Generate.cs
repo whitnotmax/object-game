@@ -5,10 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class Generate : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject[] availableObjects;
+    
     private Dictionary<GameObject, ObjectController> objectControllers = new Dictionary<GameObject, ObjectController>();
 
     public static Generate instance;
     public float radius;
+    public GameObject correctObject;
+    public int score;
 
     [SerializeField]
     private int numberToGenerate;
@@ -22,25 +27,32 @@ public class Generate : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
+    { 
+        correctObject = availableObjects[Random.Range(0, availableObjects.Length)];
         instance = this;
-        for (int i = 0; i < numberToGenerate; i++)
-        {
-            GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            obj.tag = "Object";
-            obj.transform.localPosition = Random.insideUnitCircle * 15;
-            obj.AddComponent<Rigidbody>().isKinematic = true;
-            objectControllers.Add(obj, obj.AddComponent<ObjectController>());
-            
-        }
+        GenerateObjects();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        
+    }
+
+    private void GenerateObjects()
+    {
+        for (int i = 0; i < numberToGenerate; i++)
         {
-            SceneManager.LoadScene(0);
+            GameObject randomObject = availableObjects[Random.Range(0, availableObjects.Length)];
+            GameObject obj = Instantiate(randomObject);
+            obj.tag = "Object";
+            obj.name = randomObject.name; // jank lol
+            obj.transform.localPosition = Random.insideUnitCircle * 15;
+            obj.AddComponent<Rigidbody>().isKinematic = true;
+            obj.SetActive(true);
+            objectControllers.Add(obj, obj.AddComponent<ObjectController>());
+
         }
     }
 
@@ -49,6 +61,8 @@ public class Generate : MonoBehaviour
         if (other.CompareTag("Object"))
         {
             objectControllers[other.gameObject].expandState = ExpandState.Despawning;
+            objectControllers.Remove(other.gameObject);
+
         }
     }
 }
